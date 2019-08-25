@@ -1,0 +1,11 @@
+//@version=4
+study(title="Nik Structure 1.0", shorttitle="NS 1.0", overlay=true)
+
+is_fractal_top(four, three, two, one, zero) =>
+    four < three and three < two and two > one and one > zero
+
+is_fractal_bottom(four, three, two, one, zero) =>
+    four > three and three > two and two < one and one < zero
+
+plotshape(is_fractal_top(high[4], high[3],high[2], high[1], high[0]), style=shape.triangledown, location=location.abovebar, color=color.red, offset=-2, size=size.normal)
+plotshape(is_fractal_bottom(low[4], low[3], low[2], low[1], low[0]), style=shape.triangleup, location=location.belowbar, color=color.green, offset=-2, size=size.normal)
