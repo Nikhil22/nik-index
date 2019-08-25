@@ -192,7 +192,7 @@ DI_fast_buy = DI_index > DI_indexE ? 1 : 0
 DI_slow_buy = DI_indexE > DI_indexS ? 1 : 0
 DI_fast_sell = DI_index < DI_indexE ? 1 : 0
 DI_slow_sell = DI_indexE < DI_indexS ? 1 : 0
-plot(DI_fast_buy, title="Nik_fast_buy", style=line, linewidth=3, color=green)
-// plot(DI_slow_buy, title="Nik_slow_buy", style=line, linewidth=3, color=blue)
-plot(DI_fast_sell, title="Nik_fast_sell", style=line, linewidth=3, color=red)
-// plot(DI_slow_sell, title="Nik_slow_sell", style=line, linewidth=3, color=orange)
+// plot(DI_fast_buy, title="Nik_fast_buy", style=line, linewidth=3, color=green)
+plot(DI_slow_buy, title="Nik_slow_buy", style=line, linewidth=3, color=green)
+// plot(DI_fast_sell, title="Nik_fast_sell", style=line, linewidth=3, color=red)
+plot(DI_slow_sell, title="Nik_slow_sell", style=line, linewidth=3, color=red)
