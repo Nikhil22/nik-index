@@ -1,0 +1,162 @@
+study(title="Nik Index 1.0", shorttitle="Nik Index 1.0")
+
+//Moving Averages
+short = ema(close, 13)
+medium = sma(close, 30)
+long = sma(close, 200)
+//plot(short, color = red)
+//plot(long, color = green)
+//plot(cross(short, long) ? short : na, style = cross, linewidth = 4)
+
+MA_bull1 = short > medium ? 1 : 0
+MA_bull2 = short > long ? 1 : 0
+MA_bull3 = medium > long ? 1 : 0
+
+MA_index = MA_bull1 + MA_bull2 + MA_bull3
+
+//plot(MA_bull1, title="MA BullBear1", style=line, linewidth=1, color=white)
+//plot(MA_bull2, title="MA BullBear2", style=line, linewidth=1, color=red)
+//plot(MA_bull3, title="MA BullBear3", style=line, linewidth=1, color=blue)
+
+//plot(MA_index, title="MA Index", style=line, linewidth=1, color=purple)
+
+//RSI
+RSI_PERIOD = 14
+price_change = change(close)
+price_gain = price_change >= 0 ? price_change : 0.0
+price_loss = price_change < 0 ? (-1) * price_change : 0.0
+avg_gain = rma(price_gain, RSI_PERIOD)
+avg_loss = rma(price_loss, RSI_PERIOD)
+relative_strength = avg_gain / avg_loss
+rsi = 100 - (100 / (1 + relative_strength))
+len = input(13, minval=1, title="Length")
+rsi_slow = ema(rsi, len)
+
+//plot(rsi, title="RSI", color=yellow)
+
+rsi_oversold = rsi < 30 ? 1 : 0
+rsi_overbought = rsi > 70 ? 1 : 0
+rsi_bullbear = rsi > rsi_slow ? 1 : 0
+rsi_bias = rsi > 50 ? 1 : 0
+rsi_index = rsi_oversold + rsi_bullbear + rsi_bias - rsi_overbought
+
+//plot(rsi_oversold, title="RSI OverSold Alert", style=line, linewidth=1, color=white)
+//plot(rsi_overbought, title="RSI OverBought Alert", style=line, linewidth=1, color=yellow)
+//plot(rsi_bullbear, title="Moving Average Relationship Alert", style=line, linewidth=1, color=red)
+//plot(rsi_bias, title="Bias Alert", style=line, linewidth=1, color=blue)
+//plot(rsi_index, title="RSI Index", style=line, linewidth=1, color=purple)
+
+//MACD
+source = close
+fastLength = input(12, minval=1), slowLength=input(26,minval=1)
+signalLength=input(9,minval=1)
+fastMA = ema(source, fastLength)
+slowMA = ema(source, slowLength)
+macd = fastMA - slowMA
+signal = sma(macd, signalLength)
+hist = macd - signal
+//plot(hist, color=red, style=histogram)
+//plot(macd, color=blue)
+//plot(signal, color=orange)
+
+macd_bullbear = macd > signal ? 1 : 0
+macd_bias = macd > 0 ? 1 : 0
+macd_index = macd_bullbear + macd_bias
+
+//plot(macd_bullbear, title="macd Alert", style=line, linewidth=1, color=red)
+//plot(macd_bias, title="Bias Alert", style=line, linewidth=1, color=blue)
+//plot(macd_index, title="macd Index", style=line, linewidth=1, color=purple)
+
+//OBV
+obv_src = close
+obv_out = cum(change(obv_src) > 0 ? volume : change(obv_src) < 0 ? -volume : 0*volume)
+obv_out2 = ema(obv_out, len)
+//plot(pbv_out, color=blue, title="OBV")
+//plot(obv_out2, title="EMA", color=red)
+
+OBV_bullbear = obv_out > obv_out2 ? 1 : 0
+OBV_bias = obv_out > 0 ? 1 : 0
+OBV_index = OBV_bullbear + OBV_bias
+
+//plot(OBV_bullbear, title="OBV_bullbear Alert", style=line, linewidth=1, color=blue)
+//plot(OBV_bias, title="OBV_bias Alert", style=line, linewidth=1, color=red)
+//plot(OBV_index, title="OBV Index", style=line, linewidth=1, color=purple)
+
+//MFI
+mfi_length = input(title="Length", type=integer, defval=14, minval=1, maxval=2000)
+mfi_len = input(13, minval=1, title="Length")
+mfi_src = hlc3
+mfi_upper = sum(volume * (change(mfi_src) <= 0 ? 0 : mfi_src), mfi_length)
+mfi_lower = sum(volume * (change(mfi_src) >= 0 ? 0 : mfi_src), mfi_length)
+
+//MFI & MA
+mfi_mf = rsi(mfi_upper, mfi_lower)
+mfi_mf2 = ema(mfi_mf,mfi_len)
+//plot(mfi_mf, color=red)
+//plot(mfi_mf2, color=blue)
+//overbought=hline(80, title="Overbought", color=#c0c0c0)
+//oversold=hline(20, title="Oversold", color=#c0c0c0)
+//fill(overbought, oversold, color=#9915ff, transp=90)
+
+//Index Componants
+mfi_stupid_os = mfi_mf < 20 ? 1 : 0
+mfi_stupid_ob = mfi_mf > 80 ? 1 : 0
+mfi_bullbear = mfi_mf > mfi_mf2 ? 1 : 0
+mfi_bias = mfi_mf > 50 ? 1 : 0
+mfi_index = mfi_bullbear + mfi_bias + mfi_stupid_os - mfi_stupid_ob
+
+//plot(mfi_bullbear, title="MFI_bullbear Alert", style=line, linewidth=1, color=blue)
+//plot(mfi_bias, title="MFI_bias Alert", style=line, linewidth=1, color=red)
+//plot(mfi_stupid_os, title="MFI_stupid_os Alert", style=line, linewidth=1, color=yellow)
+//plot(mfi_stupid_ob, title="MFI_stupid_ob Alert", style=line, linewidth=1, color=white)
+//plot(mfi_index, title="MFI Index", style=line, linewidth=1, color=purple)
+
+//AD
+ad = cum(close==high and close==low or high==low ? 0 : ((2*close-low-high)/(high-low))*volume)
+ad_len = input(13, minval=1, title="Length")
+ad2 = ema(ad, ad_len)
+ad_len2 = input(30, minval=1, title="Length2")
+ad3 = sma(ad, ad_len2)
+ad_len3 = input(200, minval=1, title="Length3")
+ad4 = sma(ad, ad_len3)
+
+//plot(ad, title = "Accumulation/Distribution", color=olive)
+//plot(ad2, title="EMA", color=blue)
+//plot(ad3, title="SMA", color=yellow)
+//plot(ad4, title="200SMA", color=white)
+
+AD_bullbear_short = ad > ad2 ? 1 : 0
+AD_bullbear_med = ad > ad3 ? 1 : 0
+AD_bullbear_long = ad2 > ad3 ? 1 : 0
+AD_bias = ad > 0 ? 1 : 0
+AD_bias_long = ad3 > ad4 ? 1 : 0
+
+AD_index = AD_bullbear_short + AD_bullbear_med + AD_bullbear_long + AD_bias + AD_bias_long
+
+//plot(AD_bullbear_short, title="AD_bullbear_short Alert", style=line, linewidth=1, color=blue)
+//plot(AD_bullbear_med, title="AD_bullbear_med Alert", style=line, linewidth=1, color=white)
+//plot(AD_bullbear_long, title="AD_bullbear_long Alert", style=line, linewidth=1, color=yellow)
+//plot(AD_bias, title="AD_bias Alert", style=line, linewidth=1, color=red)
+//plot(AD_bias_long, title="AD_bias_long Alerts", style=line, linewidth=1, color=green)
+//plot(AD_index, title="AD_Index", style=line, linewidth=1, color=purple)
+
+//Nik
+Nik_index = MA_index + rsi_index + macd_index + OBV_index + mfi_index + AD_index
+len_Nikema = input(13, minval=1, title="N EMA Length")
+Nik_indexE = ema(Nik_index, len_Nikema)
+len_Niksma = input(30, minval=1, title="NikSMA Length")
+Nik_indexS = sma(Nik_index, len_Niksma)
+len_NikemaA = input(3, minval=1, title="NikEMA3 Length")
+Nik_indexEA = ema(Nik_index, len_NikemaA)
+len_NikemaB = input(6, minval=1, title="NikEMA6 Length")
+Nik_indexEB = ema(Nik_index, len_NikemaB)
+plot(Nik_index, title="Nik Index", style=line, linewidth=1, color=purple)
+plot(Nik_indexE, title="Nik IndexEMA", style=line, linewidth=1, color=yellow)
+plot(Nik_indexS, title="Nik IndexSMA", style=line, linewidth=1, color=red)
+//plot(Nik_indexEA, title="Nik IndexEMA3", style=line, linewidth=1, color=yellow)
+//plot(Nik_indexEB, title="Nik IndexEMA6", style=line, linewidth=1, color=red)
+
+band1 = hline(12.75)
+band0 = hline(4.25)
+fill(band1, band0)
+hline(8.5)
