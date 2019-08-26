@@ -172,27 +172,24 @@ AD_index = AD_bullbear_short + AD_bullbear_med + AD_bullbear_long + AD_bias + AD
 //plot(AD_bias_long, title="AD_bias_long Alerts", style=line, linewidth=1, color=green)
 //plot(AD_index, title="AD_Index", style=line, linewidth=1, color=purple)
 
-//DI
-DI_index = MA_index + Willy_index + macd_index + OBV_index + mfi_index + AD_index + bb_index
-len_DIema = input(13, minval=1, title="DIEMA Length")
-DI_indexE = ema(DI_index, len_DIema)
-len_DIsma = input(30, minval=1, title="DISMA Length")
-DI_indexS = sma(DI_index, len_DIsma)
-// plot(DI_index, title="DI Index", style=line, linewidth=1, color=purple)
-// plot(DI_indexE, title="DI IndexEMA", style=line, linewidth=1, color=yellow)
-// plot(DI_indexS, title="DI IndexSMA", style=line, linewidth=1, color=red)
+//Nik
+Nik_index = MA_index + Willy_index + macd_index + OBV_index + mfi_index + AD_index + bb_index
+len_Nikema = input(13, minval=1, title="NikEMA Length")
+Nik_indexE = ema(Nik_index, len_Nikema)
+len_Niksma = input(30, minval=1, title="NikSMA Length")
+Nik_indexS = sma(Nik_index, len_Niksma)
+// plot(Nik_index, title="Nik Index", style=line, linewidth=1, color=purple)
+// plot(Nik_indexE, title="Nik IndexEMA", style=line, linewidth=1, color=yellow)
+// plot(Nik_indexS, title="Nik IndexSMA", style=line, linewidth=1, color=red)
 
 //band1 = hline(9)
 //band0 = hline(3)
 //fill(band1, band0)
 //hline(6)
 
-//DI Signals
-DI_fast_buy = DI_index > DI_indexE ? 1 : 0
-DI_slow_buy = DI_indexE > DI_indexS ? 1 : 0
-DI_fast_sell = DI_index < DI_indexE ? 1 : 0
-DI_slow_sell = DI_indexE < DI_indexS ? 1 : 0
-// plot(DI_fast_buy, title="Nik_fast_buy", style=line, linewidth=3, color=green)
-plot(DI_slow_buy, title="Nik_slow_buy", style=line, linewidth=3, color=green)
-// plot(DI_fast_sell, title="Nik_fast_sell", style=line, linewidth=3, color=red)
-plot(DI_slow_sell, title="Nik_slow_sell", style=line, linewidth=3, color=red)
+//Nik Signals
+Nik_buy = Nik_indexE > Nik_indexS ? 1 : Nik_index > Nik_indexE ? 2 : 0
+
+Nik_sell = Nik_indexE < Nik_indexS ? 1 : Nik_index < Nik_indexE ? 2 : 0
+plot(Nik_buy, title="Nik_buy", style=line, linewidth=3, color=green)
+plot(Nik_sell, title="Nik_sell", style=line, linewidth=3, color=red)
