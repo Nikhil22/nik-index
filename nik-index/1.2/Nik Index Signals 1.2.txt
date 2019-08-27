@@ -188,8 +188,13 @@ Nik_indexS = sma(Nik_index, len_Niksma)
 //hline(6)
 
 //Nik Signals
-Nik_buy = Nik_indexE > Nik_indexS ? 1 : Nik_index > Nik_indexE ? 2 : 0
 
-Nik_sell = Nik_indexE < Nik_indexS ? 1 : Nik_index < Nik_indexE ? 2 : 0
-plot(Nik_buy, title="Nik_buy", style=line, linewidth=3, color=green)
-plot(Nik_sell, title="Nik_sell", style=line, linewidth=3, color=red)
+Nik_fast_buy = Nik_index > Nik_indexE ? 3 : 0
+Nik_slow_buy = Nik_indexE > Nik_indexS ? 2 : 1
+Nik_fast_sell = Nik_index < Nik_indexE ? 3 : 0
+Nik_slow_sell = Nik_indexE < Nik_indexS ? 2 : 1
+
+plot(Nik_fast_buy, title="Fast buy", style=line, linewidth=3, color=green)
+plot(Nik_slow_buy, title="Slow buy", style=line, linewidth=3, color=green)
+plot(Nik_fast_sell, title="Fast sell", style=line, linewidth=3, color=red)
+plot(Nik_slow_sell, title="Slow sell", style=line, linewidth=3, color=red)
