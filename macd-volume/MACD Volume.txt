@@ -1,0 +1,13 @@
+//@version=4
+study("MACD Volume")
+
+vol = volume
+short_len = input(9, title="short EMA length")
+long_len = input(30, title="long EMA length")
+sig_len = input(9, title="signal length")
+
+[macd, sig, hist] = macd(vol, short_len, long_len, sig_len)
+
+plot(hist, color=color.red, style=plot.style_area, title="area")
+plot(sig, color=color.orange, title="signal")
+plot(macd, color=#2E9AFE, linewidth=2, title="MACD")
